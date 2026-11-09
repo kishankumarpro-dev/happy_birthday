@@ -3,7 +3,7 @@ import "./styles.css";
 
 /* ================= EDIT THESE ================= */
 const NAME = "Deepa Prajapati";
-const FROM = "Kishan Kumar";
+const FROM = "Kishan";
 const AGE = "25";
 const BIRTHDAY = "9th November";
 const PASSWORD = "09112001"; // her birthday: MMDDYYYY

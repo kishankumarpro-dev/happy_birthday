@@ -9,7 +9,7 @@ const BIRTHDAY = "9th November";
 const PASSWORD = "09112001"; // her birthday: MMDDYYYY
 
 const LETTER = [
-  "Today is your day, and it is one of my favourite days of the year, because it gave the world you.",
+  "Today is your day, and now it is one of my favourite day too, because it your Birthday.",
   "You have a way of making people feel seen. You listen, you care, and you never make anyone feel small. That is rare, and I hope you know it.",
   "I hope this year is gentle with you, generous to you, and full of the things that make your eyes light up. You deserve every single one.",
 ];
@@ -85,6 +85,7 @@ const PHOTOS = [
   { src: "", emoji: "😎", cap: "Main character" },
   { src: "", emoji: "🤪", cap: "Silly us" },
   { src: "", emoji: "🥹", cap: "Soft moments" },
+  { src: "", emoji: "🥹", cap: "Soft moments" },
 ];
 
 const PLACES = [
@@ -93,7 +94,7 @@ const PLACES = [
     y: 290,
     icon: "☕",
     title: "Our favourite corner",
-    text: "Where a quick hello turned into hours.",
+    text: "Where a time doesn't matter.",
   },
   {
     x: 200,

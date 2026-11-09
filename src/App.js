@@ -5,7 +5,7 @@ import "./styles.css";
 const NAME = "Deepa Prajapati";
 const FROM = "Kishan Kumar";
 const AGE = "25";
-const BIRTHDAY = "September 11";
+const BIRTHDAY = "9th November";
 const PASSWORD = "09112001"; // her birthday: MMDDYYYY
 
 const LETTER = [

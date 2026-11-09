@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./styles.css";
 
 /* ================= EDIT THESE ================= */
-const NAME = "Deepa Prajapati";
+const NAME = "Deepa Ji";
 const FROM = "Kishan";
 const AGE = "25";
 const BIRTHDAY = "9th November";

@@ -83,8 +83,8 @@ const WISHES = [
 const PHOTOS = [
   { src: "", emoji: "🥳", cap: "Pure joy" },
   { src: "", emoji: "😎", cap: "Main character" },
+  { src: "", emoji: "🫪", cap: "Our Fev" },
   { src: "", emoji: "🤪", cap: "Silly us" },
-  { src: "", emoji: "🥹", cap: "Soft moments" },
   { src: "", emoji: "🥹", cap: "Soft moments" },
 ];
 

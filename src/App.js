@@ -2,13 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./styles.css";
 
 /* ================= EDIT THESE ================= */
-const NAME = "Deepa Ji";
-const FROM = "Kishan";
+const NAME = "Deepa Prajapati";
+const FROM = "Kishan Kumar";
 const AGE = "25";
-const BIRTHDAY = "November 9";
+const BIRTHDAY = "September 11";
+const PASSWORD = "09112001"; // her birthday: MMDDYYYY
 
 const LETTER = [
-  "Today is your day, and now it is one of my favourite day too, because it your Birthday.",
+  "Today is your day, and it is one of my favourite days of the year, because it gave the world you.",
   "You have a way of making people feel seen. You listen, you care, and you never make anyone feel small. That is rare, and I hope you know it.",
   "I hope this year is gentle with you, generous to you, and full of the things that make your eyes light up. You deserve every single one.",
 ];
@@ -60,7 +61,7 @@ const STORY = [
   {
     icon: "🌧️",
     title: "The harder days",
-    text: "You stayed. You listened. You made heavy days lighter, and I never forgot it, when i'm sick 😂.",
+    text: "You stayed. You listened. You made heavy days lighter, and I never forgot it.",
   },
   {
     icon: "🌅",
@@ -77,11 +78,11 @@ const WISHES = [
   "May every small joy become a big memory.",
   "May you receive what you did not even dare to ask for.",
 ];
+
 // Add a photo link in `src` to show a real picture instead of the emoji.
 const PHOTOS = [
   { src: "", emoji: "🥳", cap: "Pure joy" },
   { src: "", emoji: "😎", cap: "Main character" },
-  { src: "", emoji: "🫪", cap: "Our Fev" },
   { src: "", emoji: "🤪", cap: "Silly us" },
   { src: "", emoji: "🥹", cap: "Soft moments" },
 ];
@@ -92,7 +93,7 @@ const PLACES = [
     y: 290,
     icon: "☕",
     title: "Our favourite corner",
-    text: "Where a time doesn't matter.",
+    text: "Where a quick hello turned into hours.",
   },
   {
     x: 200,
@@ -152,14 +153,9 @@ const SCENES = [
   { id: "story", label: "Our story", icon: "📖", tint: "#4fd1a5" },
   { id: "wishes", label: "Wishes", icon: "✨", tint: "#f5d58a" },
   { id: "moments", label: "Moments", icon: "📸", tint: "#ff8a7a" },
-  {
-    id: "places",
-    label: "Our places",
-    icon: "🗺️",
-    tint: "#5ec8ff",
-  },
+  { id: "places", label: "Our places", icon: "🗺️", tint: "#5ec8ff" },
   { id: "days", label: "Our days", icon: "📅", tint: "#ff7eb6" },
-  { id: "song", label: "Birthday song", icon: "🎵", tint: "#9b8cff" },
+  { id: "song", label: "Our song", icon: "🎵", tint: "#9b8cff" },
   { id: "candles", label: "The candles", icon: "🎂", tint: "#ffb347" },
   { id: "wish", label: "The wish", icon: "💖", tint: "#ff5fa2" },
 ];
@@ -428,6 +424,111 @@ function Intro({ onOpen }) {
         <span className="bnum right" aria-hidden="true">
           {AGE[1]}
         </span>
+      </div>
+    </Scene>
+  );
+}
+
+/* ---------- Password gate ---------- */
+
+function Gate({ onUnlock, onBack }) {
+  const [code, setCode] = useState("");
+  const [state, setState] = useState("idle"); // idle | wrong | ok
+  const timer = useRef(null);
+  const busy = state !== "idle";
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const press = useCallback(
+    (d) => {
+      if (busy) return;
+      setCode((c) => (c.length >= PASSWORD.length ? c : c + d));
+    },
+    [busy]
+  );
+  const back = useCallback(() => {
+    if (!busy) setCode((c) => c.slice(0, -1));
+  }, [busy]);
+
+  useEffect(() => {
+    if (code.length !== PASSWORD.length || state !== "idle") return;
+    if (code === PASSWORD) {
+      setState("ok");
+      timer.current = setTimeout(onUnlock, 1000);
+    } else {
+      setState("wrong");
+      timer.current = setTimeout(() => {
+        setCode("");
+        setState("idle");
+      }, 1800);
+    }
+  }, [code, state, onUnlock]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (/^[0-9]$/.test(e.key)) press(e.key);
+      else if (e.key === "Backspace") back();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [press, back]);
+
+  const message =
+    state === "wrong"
+      ? "It looks like it's not your birthday. Try to enter the correct password."
+      : state === "ok"
+      ? `Welcome, ${NAME.split(" ")[0]}! 🎉`
+      : "Hint: No Chance.";
+
+  return (
+    <Scene
+      className="gate"
+      copy={
+        <>
+          <span className="chip">🔒 Just for you</span>
+          <h2 className="title">Enter your password</h2>
+          <div
+            className={`cells ${state}`}
+            role="group"
+            aria-label="Password digits"
+          >
+            {Array.from({ length: PASSWORD.length }, (_, i) => (
+              <span key={i} className={`cell ${i < code.length ? "full" : ""}`}>
+                {i < code.length ? "●" : ""}
+              </span>
+            ))}
+          </div>
+          <p className={`gate-msg ${state}`} aria-live="polite">
+            {message}
+          </p>
+        </>
+      }
+    >
+      <div className="keypad">
+        {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => (
+          <button
+            key={d}
+            className="key"
+            onClick={() => press(d)}
+            disabled={busy}
+          >
+            {d}
+          </button>
+        ))}
+        <button className="key util" onClick={onBack} aria-label="Go back">
+          ←
+        </button>
+        <button className="key" onClick={() => press("0")} disabled={busy}>
+          0
+        </button>
+        <button
+          className="key util"
+          onClick={back}
+          disabled={busy}
+          aria-label="Delete last digit"
+        >
+          ⌫
+        </button>
       </div>
     </Scene>
   );
@@ -794,7 +895,7 @@ function Places() {
     <Scene
       copy={
         <>
-          <h2 className="title">Our places that we need to go</h2>
+          <h2 className="title">Our places</h2>
           <p className="hand">Tap a pin to remember.</p>
           <div className="prize" key={sel}>
             <span className="prize-ico">{p.icon}</span>
@@ -990,7 +1091,7 @@ function Song() {
     <Scene
       copy={
         <>
-          <h2 className="title">Birthday song</h2>
+          <h2 className="title">Our song</h2>
           <p className="hand">
             {playing
               ? "Listen closely. It is for you."
@@ -1303,6 +1404,8 @@ export default function App() {
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
   const [burst, setBurst] = useState(0);
+  const [gate, setGate] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
   const stepRef = useRef(0);
   const touch = useRef(null);
 
@@ -1361,11 +1464,25 @@ export default function App() {
   let view;
   switch (step) {
     case 0:
-      view = (
-        <Intro
-          onOpen={() => {
+      view = gate ? (
+        <Gate
+          onBack={() => setGate(false)}
+          onUnlock={() => {
+            setUnlocked(true);
+            setGate(false);
             celebrate();
             go(1);
+          }}
+        />
+      ) : (
+        <Intro
+          onOpen={() => {
+            if (unlocked) {
+              celebrate();
+              go(1);
+            } else {
+              setGate(true);
+            }
           }}
         />
       );
@@ -1428,7 +1545,10 @@ export default function App() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <div key={step} className={`scene-wrap ${dir > 0 ? "fwd" : "back"}`}>
+        <div
+          key={`${step}${gate ? "g" : ""}`}
+          className={`scene-wrap ${dir > 0 ? "fwd" : "back"}`}
+        >
           {view}
         </div>
       </main>
